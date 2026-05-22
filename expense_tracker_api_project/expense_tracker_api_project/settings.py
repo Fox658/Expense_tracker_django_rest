@@ -94,11 +94,11 @@ DATABASES = {
     },
     'postgres-prod': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'NAME': os.getenv('POSTGRES_DB_PROD'),
+        'USER': os.getenv('POSTGRES_USER_PROD'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD_PROD'),
         'HOST': 'localhost',
-        'PORT: 5432
+        'PORT': '5432'
     }
 }
 

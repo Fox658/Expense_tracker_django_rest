@@ -1,6 +1,6 @@
 import os
 
-# https://docs.djangoproject.com/en/6.0/topics/db/multi-db/
+# TODO: implement database routing when the moment comes.
 class ExpTrackerApiDbRouter:
 
     route_app_labels = {"expense_tracker_api"}
