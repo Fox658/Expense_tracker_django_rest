@@ -1,6 +1,5 @@
 import os
 
-# TODO: implement database routing when the moment comes.
 class ExpTrackerApiDbRouter:
 
     route_app_labels = {"expense_tracker_api"}
