@@ -1,16 +1,14 @@
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .serializers import CategorySerializer, ExpenseSerializer
+from .models import Category, Expense
+
+import os
 
 # Create your views here.
 # curl -X PUT -H "Content-Type: application/json" -d '{"data":{"username": "testuser", "id": 1}}' http://127.0.0.1:8000/expense-tracker-api/users/1
-class HelloWorldView(APIView):
-
-    def get(self, request, format=None):
-        """
-        Hello world endpoint for Django REST Framework (DRF)
-        """
-        return Response({"data": [{"message": "hello world!"}]})
 
 class UsersView(APIView):
 
@@ -31,39 +29,89 @@ class UsersView(APIView):
 class ExpensesView(APIView):
 
     def get(self, request, format=None):
-        pass
+        expenses = Expense.objects.all()
+
+        serializer = ExpenseSerializer(expenses, many=True)
+
+        return Response(serializer.data)
 
     def post(self, request, format=None):
-        pass
+        serializer = ExpenseSerializer(data=request.data)
 
-    def put(self, request, expense_id):
-        pass
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete(self, expense_id):
-        pass
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class BudgetsView(APIView):
-    def get(self, request, format=None):
-        pass
+    def patch(self, request, expense_id):
+        try:
+            expense = Expense.objects.get(expense_id=expense_id)
+        except Expense.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def post(self, request, format=None):
-        pass
+        serializer = ExpenseSerializer(expense, data=request.data)
 
-    def put(self, request, budget_id):
-        pass
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, budget_id):
-        pass
+    def delete(self, request, expense_id):
+        try:
+            expense = Expense.objects.get(expense_id=expense_id)
+        except Expense.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        expense.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CategoriesView(APIView):
     def get(self, request, format=None):
-        pass
+
+        categories = Category.objects.all()
+
+        serializer = CategorySerializer(categories, many=True)
+
+        return Response(serializer.data)
+
 
     def post(self, request, format=None):
-        pass
+        
+        serializer = CategorySerializer(data=request.data)
 
-    def put(self, request, category_id):
-        pass
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, category_id):
-        pass
+    def patch(self, request, category_id):
+        try:
+            category = Category.objects.get(category_id=category_id)
+        except Category.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CategorySerializer(category, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        
+
+    def delete(self, request, category_id):
+
+        try:
+            category = Category.objects.get(category_id=category_id)
+        except Category.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        category.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+

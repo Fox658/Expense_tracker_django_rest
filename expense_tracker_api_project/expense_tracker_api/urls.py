@@ -1,14 +1,15 @@
 from .views import (
-    HelloWorldView,
     UsersView,
     ExpensesView,
-    BudgetsView,
     CategoriesView
 )
 from django.urls import path
 
 urlpatterns = [
-    path('hello-world/', HelloWorldView.as_view(), name='hello-world'),
     path('users/', UsersView.as_view(), name='users'),
     path('users/<int:user_id>', UsersView.as_view(), name='user-edit'),
+    path('categories/', CategoriesView.as_view(), name='categories'),
+    path('categories/<uuid:category_id>', CategoriesView.as_view(), name='categories-edit'),
+    path('expenses/', ExpensesView.as_view(), name='expenses'),
+    path('expenses/<uuid:expense_id>', ExpensesView.as_view(), name='expenses-edit'),
 ]
