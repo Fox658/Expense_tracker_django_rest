@@ -10,4 +10,6 @@ urlpatterns = [
     path('users/<int:user_id>', UsersView.as_view(), name='user-edit'),
     path('categories/', CategoriesView.as_view(), name='categories'),
     path('categories/<uuid:category_id>', CategoriesView.as_view(), name='categories-edit'),
+    path('expenses/', ExpensesView.as_view(), name='expenses'),
+    path('expenses/<uuid:expense_id>', ExpensesView.as_view(), name='expenses-edit'),
 ]
